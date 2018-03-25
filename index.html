@@ -190,6 +190,22 @@
                         <img class="plain" src="images/OptimizedApproach.png">
                     </section>
 				</section>
+				<section>
+					<h2>Happy Coding!!!</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+						package org.apache.hadoop.mapred;
+						/*Import Statements*/
+						public abstract class FileInputFormat<K, V> implements InputFormat<K, V> {
+						....
+							protected long computeSplitSize(long goalSize,
+														long minSize,
+														long blockSize) {
+								return Math.max(minSize, Math.min(goalSize, blockSize));
+							}
+						...
+						}
+					<pre><code class="hljs" data-trim contenteditable>
+			    </section>
 			</div>
 		</div>
 
