@@ -11,6 +11,13 @@
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style>
+			.reveal .slides section .fragment.highlight-brown{
+				opacity: 1;
+				visibility: inherit; }
+			.reveal .slides section .fragment.highlight-brown.visible {
+				color: #b97e43; }
+		</style>
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -72,7 +79,7 @@
 
 					    <style type="text/css">
 						table.tableizer-table {
-							font-size: 12px;
+							font-size: 18px;
 							border: 1px solid #CCC;
 							font-family: Arial, Helvetica, sans-serif;
 						}
@@ -90,19 +97,18 @@
 					<table class="tableizer-table">
 						<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th>Change Number of Nodes</th><th>Reserved for OS/Hadoop/YARN</th><th>&nbsp;</th><th>Calculated Values</th></tr></thead><tbody>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>m4.4xlarge</td><td>Nodes</td><td>10</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>m4.4xlarge</td><td>Nodes</td><td><span class="fragment highlight-red">10</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>CPU Cores</td><td>16</td><td>15</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>RAM</td><td>64</td><td>63</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-cores</td><td>1</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td>15</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>num-executors</td><td>149</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td>4</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory</td><td>3</td></tr>
+					<tr><td>&nbsp;</td><td>CPU Cores</td><td><span class="fragment highlight-brown">16</span></td><td><span class="fragment highlight-blue">15</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>&nbsp;</td><td>RAM</td><td><span class="fragment highlight-brown">64 GB</span></td><td><span class="fragment highlight-blue">63</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-cores</td><td><span class="fragment highlight-red">1</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td><span class="fragment highlight-brown">15</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--num-executors</td><td><span class="fragment highlight-blue">149</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td><span class="fragment highlight-red">4</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-memory</td><td><span class="fragment highlight-brown">3</span></td></tr>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>spark.ext.h2o.nthreads</td><td>15</td></tr>
-					</tbody></table>
+					</tbody>
+					</table>
                     </section>
                     <section>
                         <img class="plain" src="images/ThinApproach.png"/>
@@ -113,7 +119,7 @@
 					<h4>Fat executors [One Executor per node]</h4>
 					<style type="text/css">
 						table.tableizer-table {
-							font-size: 12px;
+							font-size: 18px;
 							border: 1px solid #CCC;
 							font-family: Arial, Helvetica, sans-serif;
 						}
@@ -131,19 +137,18 @@
 					<table class="tableizer-table">
 						<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th>Change Number of Nodes</th><th>Reserved for OS/Hadoop/YARN</th><th>&nbsp;</th><th>Calculated Values</th></tr></thead><tbody>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>m4.4xlarge</td><td>Nodes</td><td>10</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>m4.4xlarge</td><td>Nodes</td><td><span class="fragment highlight-red">10</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>CPU Cores</td><td>16</td><td>15</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>RAM</td><td>64</td><td>63</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-cores</td><td>15</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td>1</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>num-executors</td><td>9</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td>63</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory</td><td>56</td></tr>
+					<tr><td>&nbsp;</td><td>CPU Cores</td><td><span class="fragment highlight-brown">16</span></td><td><span class="fragment highlight-blue">15</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>&nbsp;</td><td>RAM</td><td><span class="fragment highlight-brown">64 GB</span></td><td><span class="fragment highlight-blue">63</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-cores</td><td><span class="fragment highlight-red">15</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td><span class="fragment highlight-brown">1</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--num-executors</td><td><span class="fragment highlight-blue">9</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td><span class="fragment highlight-red">63</span></td></tr>
+					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-memory</td><td><span class="fragment highlight-brown">56</span></td></tr>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>spark.ext.h2o.nthreads</td><td>15</td></tr>
-					</tbody></table>
+					</tbody>
+					</table>
                     </section>
                     <section>
                         <img class="plain" src="images/FatApproach.png">
@@ -154,7 +159,7 @@
 					<h4>Balanced Fat and Tiny</h4>
 					<style type="text/css">
 						table.tableizer-table {
-							font-size: 12px;
+							font-size: 18px;
 							border: 1px solid #CCC;
 							font-family: Arial, Helvetica, sans-serif;
 						}
@@ -169,22 +174,22 @@
 							font-weight: bold;
 						}
 					</style>
-					<table class="tableizer-table">
-						<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th>Change Number of Nodes</th><th>Reserved for OS/Hadoop/YARN</th><th>&nbsp;</th><th>Calculated Values</th></tr></thead><tbody>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>m4.4xlarge</td><td>Nodes</td><td>10</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>CPU Cores</td><td>16</td><td>15</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>RAM</td><td>64</td><td>63</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-cores</td><td>4</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td>3</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>num-executors</td><td>29</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td>21</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory</td><td>18</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>spark.ext.h2o.nthreads</td><td>15</td></tr>
-					</tbody></table>
+					</table>
+						<table class="tableizer-table">
+							<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th>Change Number of Nodes</th><th>Reserved for OS/Hadoop/YARN</th><th>&nbsp;</th><th>Calculated Values</th></tr></thead><tbody>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+						<tr><td>m4.4xlarge</td><td>Nodes</td><td><span class="fragment highlight-red">10</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+						<tr><td>&nbsp;</td><td>CPU Cores</td><td><span class="fragment highlight-brown">16</span></td><td><span class="fragment highlight-blue">15</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+						<tr><td>&nbsp;</td><td>RAM</td><td><span class="fragment highlight-brown">64 GB</span></td><td><span class="fragment highlight-blue">63</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-cores</td><td><span class="fragment highlight-red">4</span></td></tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td><span class="fragment highlight-brown">3</span></td></tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--num-executors</td><td><span class="fragment highlight-blue">29</span></td></tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td><span class="fragment highlight-red">21</span></td></tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-memory</td><td><span class="fragment highlight-brown">18</span></td></tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>spark.ext.h2o.nthreads</td><td>15</td></tr>
+						</tbody>
+						</table>
                     </section>
                     <section>
                         <img class="plain" src="images/OptimizedApproach.png">
@@ -192,10 +197,11 @@
 				</section>
 				<section>
 					<h2>Happy Coding!!!</h2>
-					<pre><code class="hljs" data-trim contenteditable>
+					<pre>
+						<code class="hljs" data-trim contenteditable>
 						package org.apache.hadoop.mapred;
 						/*Import Statements*/
-						public abstract class FileInputFormat<K, V> implements InputFormat<K, V> {
+						public abstract class FileInputFormat &lt;K , V&gt; implements InputFormat &lt;K , V&gt; {
 						....
 							protected long computeSplitSize(long goalSize,
 														long minSize,
@@ -204,7 +210,8 @@
 							}
 						...
 						}
-					<pre><code class="hljs" data-trim contenteditable>
+						</code>
+					</pre>
 			    </section>
 			</div>
 		</div>
