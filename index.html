@@ -25,9 +25,10 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h2>Tiny executors [One Executor per core]</h2>
+                    <section>
+					    <h4>Tiny executors [One Executor per core]</h4>
 
-					<style type="text/css">
+					    <style type="text/css">
 						table.tableizer-table {
 							font-size: 12px;
 							border: 1px solid #CCC;
@@ -60,9 +61,14 @@
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory</td><td>3</td></tr>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>spark.ext.h2o.nthreads</td><td>15</td></tr>
 					</tbody></table>
+                    </section>
+                    <section>
+                        <img src="images/ThinApproach.png"/>
+                    </section>
 				</section>
 				<section>
-					<h2>Fat executors [One Executor per node]</h2>
+                    <section>
+					<h4>Fat executors [One Executor per node]</h4>
 					<style type="text/css">
 						table.tableizer-table {
 							font-size: 12px;
@@ -96,9 +102,14 @@
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory</td><td>56</td></tr>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>spark.ext.h2o.nthreads</td><td>15</td></tr>
 					</tbody></table>
+                    </section>n
+                    <section>
+                        <img src="images/FatApproach.png">
+                    </section>
 				</section>
 				<section>
-					<h2>Balanced Fat and Tiny</h2>
+                    <section>
+					<h4>Balanced Fat and Tiny</h4>
 					<style type="text/css">
 						table.tableizer-table {
 							font-size: 12px;
@@ -132,6 +143,10 @@
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory</td><td>18</td></tr>
 					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>spark.ext.h2o.nthreads</td><td>15</td></tr>
 					</tbody></table>
+                    </section>
+                    <section>
+                        <img src="images/OptimizedApproach.png">
+                    </section>
 				</section>
 			</div>
 		</div>
