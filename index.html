@@ -24,6 +24,48 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+                <section>
+                    <h4>Important Links</h4>
+                    <ul>
+                        <li><a href="https://spark.apache.org/docs/latest/configuration.html" data-preview-link>Spark Configurations</a></li>
+                        <li><a href="http://spark.apache.org/docs/latest/sql-programming-guide.html#other-configuration-option" data-preview-link>Other Spark Configurations</a></li>
+                    </ul>
+                </section>
+				<section>
+					<h4>Parameters need tuning based on instance type</h4>
+					<ul>
+						<li>--conf spark.dynamicAllocation.enabled = true | false</li>
+                        <li>--conf spark.executor.instances = 2 || --num-executors 2</li>
+						<li>--conf spark.executor.memory = 2g || --executor-memory 2g</li>
+						<li>--conf spark.executor.cores = 2 || --executor-cores 2</li>
+					</ul>
+				</section>
+                <section>
+                    <h4>Control Parallelism</h4>
+                    <ul>
+                        <li>--conf spark.default.parallelism = 200</li>
+                        <li>--conf spark.sql.shuffle.partitions = 200</li>
+                        <li><a href="https://github.com/apache/spark/blob/e9f983df275c138626af35fd263a7abedf69297f/core/src/main/scala/org/apache/spark/SparkContext.scala#L2329">Minimum Partitions</a></li>
+                    </ul>
+                    <pre>
+                    <code class="hljs" data-trim contenteditable>
+                      /**
+                       * Default min number of partitions for Hadoop RDDs when not given by user
+                       * Notice that we use math.min so the "defaultMinPartitions" cannot be higher than 2.
+                       * The reasons for this are discussed in https://github.com/mesos/spark/pull/718
+                       */
+                      def defaultMinPartitions: Int = math.min(defaultParallelism, 2)
+                    </code>
+                    </pre>
+                </section>
+                <section>
+                    <h4>How much memory each tasks would have?</h4>
+                    <ul>
+                        <li>--conf spark.memory.fraction = 0.6</li>
+                        <li>--conf spark.memory.storageFraction = 0.5</li>
+                    </ul>
+                    <p>Task Memory = (spark.executor.memory * spark.memory.fraction * spark.memory.storageFraction) / spark.executor.cores</p>
+                </section>
 				<section>
                     <section>
 					    <h4>Tiny executors [One Executor per core]</h4>
