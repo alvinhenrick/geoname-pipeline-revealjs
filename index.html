@@ -7,7 +7,7 @@
 		<title>reveal.js</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/sky.css">
+		<link rel="stylesheet" href="css/theme/white.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -47,7 +47,7 @@
 						<li>--conf spark.executor.memory = 2g || --executor-memory 2g</li>
 						<li>--conf spark.executor.cores = 2 || --executor-cores 2</li>
 					</ul>
-					<p>spark.yarn.executor.memoryOverhead=max(384, .10 * spark.executor.memory)</p>
+					<p><span style="color:#ff2c2d;">spark.yarn.executor.memoryOverhead</span>=max(384, .10 * spark.executor.memory)</p>
 				</section>
                 <section>
                     <h4>Control Parallelism</h4>
@@ -214,7 +214,8 @@
 						}
 						</code>
 					</pre>
-			    </section>
+					<p><span style="color:#ff2c2d;">How does Hadoop & Spark Control Partitioning ?</span></p>
+				</section>
 			</div>
 		</div>
 
