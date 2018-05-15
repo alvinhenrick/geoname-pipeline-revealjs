@@ -1,238 +1,124 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Tuning Spark</title>
+    <title>Geoname Pipeline</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
-		<style>
-			.reveal .slides section .fragment.highlight-brown{
-				opacity: 1;
-				visibility: inherit; }
-			.reveal .slides section .fragment.highlight-brown.visible {
-				color: #b97e43; }
-		</style>
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <style>
+        .reveal .slides section ul li {
+            font-size: 0.8em;
+        }
+    </style>
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-                <section>
-                    <h4>Important Links</h4>
-                    <ul>
-                        <li><a href="https://spark.apache.org/docs/latest/configuration.html" data-preview-link>Spark Configurations</a></li>
-                        <li><a href="http://spark.apache.org/docs/latest/sql-programming-guide.html#other-configuration-option" data-preview-link>Other Spark Configurations</a></li>
-                    </ul>
-					<img src="images/spark-tuning2-f1i.png">
-                </section>
-				<section>
-					<h4>Parameters need tuning based on instance type</h4>
-					<ul>
-						<li>--conf spark.dynamicAllocation.enabled = true | false</li>
-                        <li>--conf spark.executor.instances = 2 || --num-executors 2</li>
-						<li>--conf spark.executor.memory = 2g || --executor-memory 2g</li>
-						<li>--conf spark.executor.cores = 2 || --executor-cores 2</li>
-					</ul>
-					<p><span style="color:#ff2c2d;">spark.yarn.executor.memoryOverhead</span>=max(384, .10 * spark.executor.memory)</p>
-				</section>
-                <section>
-                    <h4>Control Parallelism</h4>
-                    <ul>
-                        <li>--conf spark.default.parallelism = 200</li>
-                        <li>--conf spark.sql.shuffle.partitions = 200</li>
-                        <li><a href="https://github.com/apache/spark/blob/e9f983df275c138626af35fd263a7abedf69297f/core/src/main/scala/org/apache/spark/SparkContext.scala#L2329">Minimum Partitions</a></li>
-                    </ul>
-                    <pre>
-                    <code class="hljs" data-trim contenteditable>
-                      /**
-                       * Default min number of partitions for Hadoop RDDs when not given by user
-                       * Notice that we use math.min so the "defaultMinPartitions" cannot be higher than 2.
-                       * The reasons for this are discussed in https://github.com/mesos/spark/pull/718
-                       */
-                      def defaultMinPartitions: Int = math.min(defaultParallelism, 2)
-                    </code>
-                    </pre>
-                </section>
-                <section>
-                    <h4>How much memory each tasks would have?</h4>
-                    <ul>
-                        <li>--conf spark.memory.fraction = 0.6</li>
-                        <li>--conf spark.memory.storageFraction = 0.5</li>
-                    </ul>
-                    <p>Task Memory = (spark.executor.memory * spark.memory.fraction * spark.memory.storageFraction) / spark.executor.cores</p>
-                </section>
-				<section>
-                    <section>
-                        <h4>Tiny executors <span style="color:#ff2c2d;">[One Executor per core]</span></h4>
 
-					    <style type="text/css">
-						table.tableizer-table {
-							font-size: 18px;
-							border: 1px solid #CCC;
-							font-family: Arial, Helvetica, sans-serif;
-						}
-						.tableizer-table td {
-							padding: 4px;
-							margin: 3px;
-							border: 1px solid #CCC;
-						}
-						.tableizer-table th {
-							background-color: #104E8B;
-							color: #FFF;
-							font-weight: bold;
-						}
-					</style>
-					<table class="tableizer-table">
-						<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th>Change Number of Nodes</th><th>Reserved for OS/Hadoop/YARN</th><th>&nbsp;</th><th>Calculated Values</th></tr></thead><tbody>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>m4.4xlarge</td><td>Nodes</td><td><span class="fragment highlight-red">10</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>CPU Cores</td><td><span class="fragment highlight-brown">16</span></td><td><span class="fragment highlight-blue">15</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>RAM</td><td><span class="fragment highlight-brown">64 GB</span></td><td><span class="fragment highlight-blue">63</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-cores</td><td><span class="fragment highlight-red">1</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td><span class="fragment highlight-brown">15</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--num-executors</td><td><span class="fragment highlight-blue">149</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td><span class="fragment highlight-red">4</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-memory</td><td><span class="fragment highlight-brown">3</span></td></tr>
-					</tbody>
-					</table>
-                    </section>
-                    <section>
-                        <img class="plain" src="images/ThinApproach.png"/>
-                    </section>
-				</section>
-				<section>
-                    <section>
-                        <h4>Fat executors <span style="color:#ff2c2d;">[One Executor per node]</span></h4>
-					<style type="text/css">
-						table.tableizer-table {
-							font-size: 18px;
-							border: 1px solid #CCC;
-							font-family: Arial, Helvetica, sans-serif;
-						}
-						.tableizer-table td {
-							padding: 4px;
-							margin: 3px;
-							border: 1px solid #CCC;
-						}
-						.tableizer-table th {
-							background-color: #104E8B;
-							color: #FFF;
-							font-weight: bold;
-						}
-					</style>
-					<table class="tableizer-table">
-						<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th>Change Number of Nodes</th><th>Reserved for OS/Hadoop/YARN</th><th>&nbsp;</th><th>Calculated Values</th></tr></thead><tbody>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>m4.4xlarge</td><td>Nodes</td><td><span class="fragment highlight-red">10</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>CPU Cores</td><td><span class="fragment highlight-brown">16</span></td><td><span class="fragment highlight-blue">15</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>RAM</td><td><span class="fragment highlight-brown">64 GB</span></td><td><span class="fragment highlight-blue">63</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-cores</td><td><span class="fragment highlight-red">15</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td><span class="fragment highlight-brown">1</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--num-executors</td><td><span class="fragment highlight-blue">9</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td><span class="fragment highlight-red">63</span></td></tr>
-					<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-memory</td><td><span class="fragment highlight-brown">56</span></td></tr>
-					</tbody>
-					</table>
-                    </section>
-                    <section>
-                        <img class="plain" src="images/FatApproach.png">
-                    </section>
-				</section>
-				<section>
-                    <section>
-                        <h4>Balanced <span style="color:#ff2c2d;">Fat and Tiny</span></h4>
-					<style type="text/css">
-						table.tableizer-table {
-							font-size: 18px;
-							border: 1px solid #CCC;
-							font-family: Arial, Helvetica, sans-serif;
-						}
-						.tableizer-table td {
-							padding: 4px;
-							margin: 3px;
-							border: 1px solid #CCC;
-						}
-						.tableizer-table th {
-							background-color: #104E8B;
-							color: #FFF;
-							font-weight: bold;
-						}
-					</style>
-					</table>
-						<table class="tableizer-table">
-							<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th>Change Number of Nodes</th><th>Reserved for OS/Hadoop/YARN</th><th>&nbsp;</th><th>Calculated Values</th></tr></thead><tbody>
-						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-						<tr><td>m4.4xlarge</td><td>Nodes</td><td><span class="fragment highlight-red">10</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-						<tr><td>&nbsp;</td><td>CPU Cores</td><td><span class="fragment highlight-brown">16</span></td><td><span class="fragment highlight-blue">15</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
-						<tr><td>&nbsp;</td><td>RAM</td><td><span class="fragment highlight-brown">64 GB</span></td><td><span class="fragment highlight-blue">63</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
-						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-cores</td><td><span class="fragment highlight-red">4</span></td></tr>
-						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-per-node</td><td><span class="fragment highlight-brown">3</span></td></tr>
-						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--num-executors</td><td><span class="fragment highlight-blue">29</span></td></tr>
-						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>executor-memory with overhead</td><td><span class="fragment highlight-red">21</span></td></tr>
-						<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>--executor-memory</td><td><span class="fragment highlight-brown">18</span></td></tr>
-						</tbody>
-						</table>
-                    </section>
-                    <section>
-                        <img class="plain" src="images/OptimizedApproach.png">
-                    </section>
-				</section>
-				<section>
-					<h2>Happy Coding!!!</h2>
-					<pre>
-						<code class="hljs" data-trim contenteditable>
-						package org.apache.hadoop.mapred;
-						/*Import Statements*/
-						public abstract class FileInputFormat &lt;K , V&gt; implements InputFormat &lt;K , V&gt; {
-						....
-							protected long computeSplitSize(long goalSize,
-														long minSize,
-														long blockSize) {
-								return Math.max(minSize, Math.min(goalSize, blockSize));
-							}
-						...
-						}
-						</code>
-					</pre>
-					<p><span style="color:#ff2c2d;">How does Hadoop & Spark Control Partitioning ?</span></p>
-					<p><span style="color:#ff2c2d;">To Be Continued...</span></p>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h7>High Level Overview</h7>
+            <img src="images/high-level-architecture.png">
+        </section>
+        <section>
+            <h7>Project Description & Technology Stack</h7>
+            <ul>
+                <li>The purpose of this project is to do the POC to ingest and index data for easy search.</li>
+                <li>It has support for geo spatial search <a
+                        href="https://lucene.apache.org/solr/guide/7_2/spatial-search.html#SpatialSearch-RPT">SpatialSearch</a>
+                    <b>nearest neighbors </b> or <b>full-text by name</b>.
+                </li>
+                <li><a href="https://spark.apache.org/">Apache Spark</a> is used for distributed in memory compute ,
+                    transform and ingest to build the
+                    pipeline.
+                </li>
+                <li><a href="http://lucene.apache.org/solr/">Apache Solr</a> is used for storage and indexing can be
+                    configured in cloud mode (Multiple Solr server servers) can be easily scaled up by increasing server
+                    nodes.
+                </li>
+                <li> Apache Spark has support for various sources and sinks such as read and write from <em
+                        style="color: red">JDBC</em>, Kafka , S3
+                    and HDFS etc.
+                </li>
+        </section>
+        <section>
+            <h7>Pipeline Overview</h7>
+            <img src="images/geoname-pipeline.png">
+        </section>
+        <section>
+            <h7>Pipeline Description</h7>
+            <ul>
+                <li>The Apache Solr collection (table name sql equivalent) can be configured with <b>shards (no of
+                    partitions)</b> and <b>replicas (fault tolerance)</b>
+                </li>
+                <li>The requirement to handle schema evolution can be done by Solr <a
+                        href="https://lucene.apache.org/solr/guide/7_2/schema-factory-definition-in-solrconfig.html#solr-uses-managed-schema-by-default">Managed
+                    Schema Configuration</a></li>
+                <li>The <em style="color: red">id</em> attribute which is derived from <em
+                        style="color: red">geonameid</em> will take care of updating the
+                    collection for future updates and schema evolution as describe above.
+                </li>
+                <li>We can store binary data <a
+                        href="https://lucene.apache.org/solr/guide/6_6/field-types-included-with-solr.html">Binary Data
+                    Store</a> such as Shape Files into Solr Document.
+                </li>
+                <li>We can also convert shape file into GeoJSON format and then ingest it into Solr for future
+                    processing and updates.
+                </li>
+            </ul>
+            </ul>
+        </section>
+        <section>
+            <h7>Search By Name</h7>
+            <img src="images/bynamesearch1.png">
+        </section>
+        <section>
+            <h7>Search By Greater Circle Distance</h7>
+            <img src="images/geofilt.png">
+        </section>
+        <section>
+            <h7>Search By Bounding Box</h7>
+            <img src="images/bbox.png">
+        </section>
+        <section>
+            <h2>Thank You!!!</h2>
+        </section>
+    </div>
+</div>
 
-				</section>
-			</div>
-		</div>
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
-
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+</script>
+</body>
 </html>
